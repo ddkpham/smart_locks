@@ -1,7 +1,7 @@
 TARGET = locking
-OBJS = main.o klock.o graph.o
+OBJS = main2.o klock.o graph.o
 
-CFLAGS = -Wall -g -std=c99 -Werror -pthread -lrt -D_POSIX_C_SOURCE=199309L
+CFLAGS = -Wall -g -std=c99 -Werror -pthread  -D_POSIX_C_SOURCE=199309L
 CC = gcc
 
 all: clean $(TARGET)

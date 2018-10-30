@@ -10,7 +10,7 @@ void init_lock(SmartLock* lock) {
 }
 
 int lock(SmartLock* lock) {
-	printf("%lu attempting to acquire lock %d\n", pthread_self(), lock->lock_number);
+	printf("%1lu attempting to acquire lock %d\n", (long) pthread_self(), lock->lock_number);
 	pthread_mutex_lock(&(lock->mutex));
 	return 1;
 }

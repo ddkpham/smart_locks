@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define MAX_NUM_IN_QUEUE 1000
+struct node{
+    int vertex_number;
+    struct node* next;
+};
 
 struct queue{
     int items[MAX_NUM_IN_QUEUE];
@@ -15,16 +20,15 @@ struct Graph{
     int* visited;
 };
 
-//queue for BFS
+//queue functions for BFS
 struct queue* createQueue();
-void enqueue(struct queue* q, int value);
-int dequeue(struct queue* q);
-void display(struct queue* q);
-int isEmpty(struct queue* q);
-void printQueue(struct queue* q);
-
+void enqueue(struct queue* queue, int value);
+int dequeue(struct queue* queue);
+int isEmpty(struct queue* queue);
+void printQueue(struct queue* queue);
+_Bool isInQueue(struct queue* queue, int value);
 //Graph functions
-
+struct node* createNode(int value);
 struct Graph* createGraph(int vertices);
 void addEdge(struct Graph *, int src, int dest);
 void printGraph(struct Graph* graph);
