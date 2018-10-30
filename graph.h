@@ -9,6 +9,24 @@ struct queue{
     int rear;
 };
 
+struct Graph{
+    int num_of_vertices;
+    struct node** adjLists;
+    int* visited;
+};
 
-struct queue * createQueue();
+//queue for BFS
+struct queue* createQueue();
 void enqueue(struct queue* q, int value);
+int dequeue(struct queue* q);
+void display(struct queue* q);
+int isEmpty(struct queue* q);
+void printQueue(struct queue* q);
+
+//Graph functions
+
+struct Graph* createGraph(int vertices);
+void addEdge(struct Graph *, int src, int dest);
+void printGraph(struct Graph* graph);
+void bfs(struct Graph* graph, int startVertex);
+
