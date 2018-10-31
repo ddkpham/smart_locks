@@ -113,7 +113,7 @@ void printGraph(struct Graph* graph){
         printf("TBD\n");
     }
 }
-
+//detects cycles now
 void bfs(struct Graph* graph, int startVertex){
     int parent[graph->num_of_vertices];//parent of node u
     for(int i = 0; i<graph->num_of_vertices;i++){
@@ -134,8 +134,12 @@ void bfs(struct Graph* graph, int startVertex){
             if(graph->visited[adjVertex] == 0){
                 graph->visited[adjVertex] = 1;
                 enqueue(q, adjVertex);
-                //parent[adjVertex] = currentVertex;
+                parent[adjVertex] = currentVertex;
                 //fix this to solve for cycles
+            }
+            if(graph->visited[adjVertex]== 1 && parent[adjVertex] != currentVertex 
+                && parent[adjVertex]!=-1 && parent[currentVertex] != adjVertex){
+                printf("Cycle detected!\n");
             }
             temp = temp-> next;
        }

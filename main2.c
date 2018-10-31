@@ -11,20 +11,20 @@ int main(void){
 
     addEdge(graph, 0, 1);
     addEdge(graph, 0, 2);
-    addEdge(graph, 0, 3);
-    addEdge(graph, 1, 2);
-    addEdge(graph, 2, 4);
+    //addEdge(graph, 0, 3);
+    addEdge(graph, 3, 4);
+    //addEdge(graph, 1, 4);
     addEdge(graph, 1, 5);
     addEdge(graph, 3, 5);
     addEdge(graph, 3, 6);
     addEdge(graph, 5, 7);
-    addEdge(graph, 6, 7);
-    addEdge(graph, 4, 7);
+    //addEdge(graph, 6, 7);
+    //addEdge(graph, 4, 7);
 
 
     bfs(graph, 0);
 
-    struct queue * queue = createQueue();
+    /* struct queue * queue = createQueue();
     for(int i = 0; i< 15; i++){
         enqueue(queue, i);
     }
@@ -37,9 +37,9 @@ int main(void){
             printf("%d is not in the queue!\n", i);
         }
 
-    }
+    }*/
     
-    
+
     
     
 
