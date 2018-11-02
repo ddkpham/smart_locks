@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define MAX_NUM_IN_QUEUE 1000
+#define MAX_NUM_IN_QUEUE 10000
 struct node{
     int vertex_number;
     struct node* next;
@@ -32,5 +32,8 @@ struct node* createNode(int value);
 struct Graph* createGraph(int vertices);
 void addEdge(struct Graph *, int src, int dest);
 void printGraph(struct Graph* graph);
-void bfs(struct Graph* graph, int startVertex);
+_Bool bfs_cycle_detect(struct Graph* graph, int startVertex);
+void deleteEdge(struct Graph* graph, int src, int dest);
+void addVertex(struct Graph *, int vertex_number);
+
 

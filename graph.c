@@ -3,7 +3,7 @@
 #include "graph.h"
 #include <stdbool.h>
 
-#define MAX_NUM_IN_QUEUE 1000
+#define MAX_NUM_IN_QUEUE 10000
 //queue functions for BFS
 struct queue* createQueue(){
     struct queue* queue = malloc(sizeof(struct queue));
@@ -108,18 +108,62 @@ void addEdge(struct Graph * graph , int src, int dest){
     graph->adjLists[dest] = newNode;
 }
 
-void printGraph(struct Graph* graph){
-    for(int i = 0; i<graph->num_of_vertices;i++){
-        printf("TBD\n");
+void deleteSingleEdge(struct Graph* graph, int src, int dest){
+    struct node * curr = graph->adjLists[src];
+    struct node * prev = graph->adjLists[src];
+    //if dest is first in list or only element
+    if(curr->vertex_number== dest && prev->vertex_number == dest){
+        graph->adjLists[src] = curr->next;
+        free(curr);
+        return;
+    }
+    curr= curr->next;
+    while(curr){
+        if(curr->vertex_number==dest){
+            prev->next = curr->next;
+            free(curr);
+        }
+        curr= curr->next;
     }
 }
-//detects cycles now
-void bfs(struct Graph* graph, int startVertex){
-    int parent[graph->num_of_vertices];//parent of node u
+
+void deleteEdge(struct Graph* graph, int src, int dest){
+    //delete from both adjacency lists
+    deleteSingleEdge( graph, src, dest);
+    deleteSingleEdge( graph, dest, src);
+    return;
+}
+
+    
+
+    
+    //delete edge from dest to src
+
+
+
+
+void addVertex(struct Graph *, int vertex_number);
+
+void printGraph(struct Graph* graph){
     for(int i = 0; i<graph->num_of_vertices;i++){
+        printf("The neighbours of vertex %d are:  ", i);
+        struct node* temp = graph->adjLists[i];
+        while(temp){
+            printf("%d  ", temp->vertex_number);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}
+
+//detects cycles now
+//returns true if cycle is detected, false otherwise
+_Bool bfs_cycle_detect(struct Graph* graph, int startVertex){
+    int parent[graph->num_of_vertices];//parent of node u
+    /*for(int i = 0; i<graph->num_of_vertices;i++){
         parent[i] = -1;
         printf("parent[%d] is: %d\n", i, parent[i]);
-    }
+    }*/
     struct queue * q = createQueue();
     graph->visited[startVertex] = 1;
     enqueue(q, startVertex);
@@ -140,8 +184,10 @@ void bfs(struct Graph* graph, int startVertex){
             if(graph->visited[adjVertex]== 1 && parent[adjVertex] != currentVertex 
                 && parent[adjVertex]!=-1 && parent[currentVertex] != adjVertex){
                 printf("Cycle detected!\n");
+                return true;
             }
             temp = temp-> next;
        }
    }
+   return false;
 }
