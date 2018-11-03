@@ -1,5 +1,5 @@
 TARGET = locking
-OBJS = main2.o klock.o graph.o
+OBJS = main.o klock.o graph.o
 
 CFLAGS = -Wall -g -std=c99 -Werror -pthread  -D_POSIX_C_SOURCE=199309L
 CC = gcc

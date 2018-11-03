@@ -164,7 +164,7 @@ _Bool bfs_cycle_detect(struct Graph* graph, int startVertex){
     while(!isEmpty(q)){
         printQueue(q);
         int currentVertex = dequeue(q);
-        printf("Visited %d\n", currentVertex);
+        //printf("Visited %d\n", currentVertex);
         struct node* temp = graph->adjLists[currentVertex];
         while(temp){
         int adjVertex = temp -> vertex_number;
@@ -183,6 +183,6 @@ _Bool bfs_cycle_detect(struct Graph* graph, int startVertex){
             temp = temp-> next;
        }
    }
-   printf("No cycle detected!");
+   printf("No cycle detected!\n");
    return false;
 }
