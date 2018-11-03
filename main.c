@@ -4,6 +4,7 @@
 #include "klock.h"
 #include <pthread.h>
 
+
 SmartLock glocks[2];
 
 void *thread_0(void *arg) {

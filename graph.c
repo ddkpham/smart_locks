@@ -136,12 +136,6 @@ void deleteEdge(struct Graph* graph, int src, int dest){
 
     
 
-    
-    //delete edge from dest to src
-
-
-
-
 void addVertex(struct Graph *, int vertex_number);
 
 void printGraph(struct Graph* graph){
@@ -189,5 +183,6 @@ _Bool bfs_cycle_detect(struct Graph* graph, int startVertex){
             temp = temp-> next;
        }
    }
+   printf("No cycle detected!");
    return false;
 }
