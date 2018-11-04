@@ -15,32 +15,18 @@ int main(void){
         index[i] = i+10;
         printf("This is the value of index[%d] = %d\n", i, index[i]);
     }
+    printf("\n");
 
-    addEdge(graph, 0, 1);
-    // addEdge(graph, 0, 2);
-    // addEdge(graph, 0, 3);
-    // addEdge(graph, 3, 4);
-    // addEdge(graph, 2, 5);
-    // addEdge(graph, 1, 6);
+    //addEdge(graph, 0, 1);
+    addEdge(graph, 0, 2);
+    addEdge(graph, 1, 3);
+    addEdge(graph, 1, 2);
+    //addEdge(graph, 0, 3);
+
     
-    // addEdge(graph, 4, 8);
-    // addEdge(graph, 6, 7);
-    // addEdge(graph, 6, 5);
-    // deleteEdge(graph, 6, 5);
-    // deleteEdge(graph, 0, 1);
-    // deleteEdge(graph, 0, 2);
-    // deleteEdge(graph, 0, 3);
-    // deleteEdge(graph, 3, 4);
-    // deleteEdge(graph, 2, 5);
-    // deleteEdge(graph, 1, 6);
-    
-    //addEdge(graph, 4, 8);
-    //addEdge(graph, 6, 7);
-    //addEdge(graph, 1,2);
-    //addEdge(graph, 4, 7);
+    printGraph(graph);
 
-
-    _Bool test = bfs_cycle_detect(graph, 0);
+    _Bool test = bfs_cycle_detect(graph, 2);
     if(test){
         printf("There was a Cycle detected!\n");
     }
