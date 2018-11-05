@@ -136,7 +136,6 @@ void deleteEdge(struct Graph* graph, int src, int dest){
 
     
 
-void addVertex(struct Graph *, int vertex_number);
 
 void printGraph(struct Graph* graph){
     for(int i = 0; i<graph->num_of_vertices;i++){
@@ -150,19 +149,25 @@ void printGraph(struct Graph* graph){
     }
 }
 
+//THIS DOES NOT WORK FOR GRAPHS THAT NEED CYCLES DETECTED MULTIPLE TIMES
 //detects cycles now
 //returns true if cycle is detected, false otherwise
 _Bool bfs_cycle_detect(struct Graph* graph, int startVertex){
-    int parent[graph->num_of_vertices];//parent of node u
-    /*for(int i = 0; i<graph->num_of_vertices;i++){
+    //create an array to store parent of node u, set to -1 which means no parent currently
+    int parent[graph->num_of_vertices];
+    for(int i = 0; i<graph->num_of_vertices;i++){
         parent[i] = -1;
-        printf("parent[%d] is: %d\n", i, parent[i]);
-    }*/
+        //printf("parent[%d] is: %d\n", i, parent[i]);
+    }
+    //set all vertices as unvisited
+    for(int i = 0; i< graph->num_of_vertices; i++){
+                    graph->visited[i] = 0;
+                }
     struct queue * q = createQueue();
     graph->visited[startVertex] = 1;
     enqueue(q, startVertex);
     while(!isEmpty(q)){
-        printQueue(q);
+        //printQueue(q);
         int currentVertex = dequeue(q);
         //printf("Visited %d\n", currentVertex);
         struct node* temp = graph->adjLists[currentVertex];
@@ -178,6 +183,8 @@ _Bool bfs_cycle_detect(struct Graph* graph, int startVertex){
             if(graph->visited[adjVertex]== 1 && parent[adjVertex] != currentVertex 
                 && parent[adjVertex]!=-1 && parent[currentVertex] != adjVertex){
                 printf("Cycle detected!\n");
+                //reset visited values and parent values
+
                 return true;
             }
             temp = temp-> next;

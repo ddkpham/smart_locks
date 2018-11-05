@@ -72,5 +72,6 @@ int main(int argc, char *argv[]) {
     // You can assume that cleanup will always be the last function call
     // in main function of the test cases.
     cleanup();
+    printf("finished!\n");
     return 0;
 }

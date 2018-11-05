@@ -34,6 +34,5 @@ void addEdge(struct Graph *, int src, int dest);
 void printGraph(struct Graph* graph);
 _Bool bfs_cycle_detect(struct Graph* graph, int startVertex);
 void deleteEdge(struct Graph* graph, int src, int dest);
-void addVertex(struct Graph *, int vertex_number);
 
 
