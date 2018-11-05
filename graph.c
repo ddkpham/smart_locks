@@ -42,10 +42,10 @@ int dequeue(struct queue* queue){
 
 void printQueue(struct queue* queue){
     if(queue->front ==-1 && queue->rear == -1){
-        printf("Queue is empty.\n");
+        //printf("Queue is empty.\n");
     }
     else{
-        printf("Queue contains...\n");
+        //printf("Queue contains...\n");
         for(int i = queue->front; i < queue->rear +1; i++){
             printf("%d\t", queue->items[i]);
         }
@@ -64,7 +64,7 @@ _Bool isInQueue(struct queue* queue, int value){
 
 int isEmpty(struct queue* queue){
     if(queue->front ==-1 && queue->rear ==-1){
-        printf("Queue is empty\n");
+        //printf("Queue is empty\n");
         return 1;
     }
     else{
@@ -72,6 +72,9 @@ int isEmpty(struct queue* queue){
     }
 }
 
+void destroyQueue(struct queue* queue){
+    free(queue);
+}
 
 //Graph functions
 
@@ -87,6 +90,16 @@ struct Graph* createGraph(int vertices){
         graph->visited[i] = 0;
     }
     return graph;
+}
+
+void destroyGraph(struct Graph* graph){
+    for(int i = 0; i < graph->num_of_vertices; i++){
+        free(graph->adjLists[i]);
+       //free(graph->visited[i]);
+    }
+    free(graph->adjLists);
+    free(graph->visited);
+    free(graph);
 }
 
 struct node* createNode(int value){
@@ -183,6 +196,7 @@ _Bool bfs_cycle_detect(struct Graph* graph, int startVertex){
             if(graph->visited[adjVertex]== 1 && parent[adjVertex] != currentVertex 
                 && parent[adjVertex]!=-1 && parent[currentVertex] != adjVertex){
                 printf("Cycle detected!\n");
+                destroyQueue(q);
                 //reset visited values and parent values
 
                 return true;
@@ -190,6 +204,7 @@ _Bool bfs_cycle_detect(struct Graph* graph, int startVertex){
             temp = temp-> next;
        }
    }
+   destroyQueue(q);
    printf("No cycle detected!\n");
    return false;
 }

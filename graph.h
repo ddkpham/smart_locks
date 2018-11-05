@@ -27,6 +27,7 @@ int dequeue(struct queue* queue);
 int isEmpty(struct queue* queue);
 void printQueue(struct queue* queue);
 _Bool isInQueue(struct queue* queue, int value);
+void destroyQueue(struct queue* queue);
 //Graph functions
 struct node* createNode(int value);
 struct Graph* createGraph(int vertices);
@@ -34,5 +35,6 @@ void addEdge(struct Graph *, int src, int dest);
 void printGraph(struct Graph* graph);
 _Bool bfs_cycle_detect(struct Graph* graph, int startVertex);
 void deleteEdge(struct Graph* graph, int src, int dest);
+void destroyGraph(struct Graph* graph);
 
 

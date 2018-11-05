@@ -32,7 +32,7 @@ void init_lock(SmartLock* lock) {
 	if(resource_graph_initiated==false){
 		//make sure to change this later! 
 		//Initialize locks
-		graph = createGraph(1000);
+		graph = createGraph(10);
 		if (pthread_mutex_init(&count_lock, NULL) != 0)
     	{
         	printf("\n mutex init failed\n");
@@ -56,10 +56,13 @@ void init_lock(SmartLock* lock) {
 int lock(SmartLock* lock) {
 	//check if this thread is a new thread trying to acquire a lock for the first time
 	int thread_number = (int) pthread_self();
+	pthread_mutex_lock(&index_lock);
 	_Bool new_thread_check = is_new_thread(thread_number);
+	pthread_mutex_unlock(&index_lock);
 	//if it is new, add it to index list and add an edge to the graph
 	if(new_thread_check){
-		//updating num of vertices and vertex indexing, setting vertex number
+
+		//New thread, give it a vertex number and mark it in index
 		pthread_mutex_lock(&count_lock);
 		pthread_mutex_lock(&index_lock);
 		printf("entering crit section...\n");
@@ -78,21 +81,23 @@ int lock(SmartLock* lock) {
 		//handle logic for cycle detection here
 		//create edge for resource request
 		pthread_mutex_lock(&graph_lock);
-		//printf("\n\tadding edge (%d, %d)... new vertex\n",vertex_number, lock->lock_number);
+		printf("\n\tadding edge (%d, %d)... new vertex\n",vertex_number, lock->lock_number);
 		addEdge(graph, vertex_number, lock->lock_number);
-		
+		printGraph(graph);
 		_Bool c_test = bfs_cycle_detect(graph, lock->lock_number);
 		//if there is a cycle, delete edge and return 0
 		if(c_test){
 			deleteEdge(graph, vertex_number, lock->lock_number);
+			printGraph(graph);
 			printf("\n\tdeleting edge (%d, %d)...\n",vertex_number, lock->lock_number);
 			pthread_mutex_unlock(&graph_lock);
+			//printf("\nthis is %d exiting here!\n", vertex_number);
 			return 0;
 		}
 		printf("\nthis is %d exiting here!\n", vertex_number);
 		pthread_mutex_unlock(&graph_lock);
-		// //no cycle, keep else and obtain lock 
-		
+
+		//check if there is a cycle, if there is delete edge and deny resource, if there isn't attempt to acquire lock
 	}
 	else{
 		//not a new thread, find vertex number, add edge and check for cycle
@@ -106,26 +111,33 @@ int lock(SmartLock* lock) {
 		printf("\n\tadding edge (%d, %d)... old vertex\n",vertex_number, lock->lock_number);
 		addEdge(graph, vertex_number, lock->lock_number);
 
-		//printGraph(graph);
+		printGraph(graph);
 		_Bool c_test = bfs_cycle_detect(graph, lock->lock_number);
 		//if there is a cycle, delete edge and return 0
 		if(c_test==true){
 			deleteEdge(graph, vertex_number, lock->lock_number);
 			printf("\n\tdeleting edge (%d, %d)...\n",vertex_number, lock->lock_number);
-			//printGraph(graph);
+			printGraph(graph);
 			pthread_mutex_unlock(&graph_lock);
 			printf("\nthis is %d exiting here! This is where I am\n", vertex_number);
-			sleep(1);
+			//sleep(1);
 			return 0;
+			printf("i got here!\n");
 		}
 		//no cycle, keep else and obtain lock 
-		//printf("\nthis is %d exiting here! and going to acquire lock!\n", vertex_number);
+		printf("\nthis is %d exiting here! and going to acquire lock!\n", vertex_number);
 		pthread_mutex_unlock(&graph_lock);
-		sleep(1);
+		//sleep(1);
 
 
 	}
+	//no cycle detected. thread will attempt to obtain lock 
+	printf("attempting to acquire smart lock %d\n", lock->lock_number);
 	pthread_mutex_lock(&(lock->mutex));
+
+	int vertex_number = find_vertex_number(vertex_index, thread_number,vertex_count);
+
+	printf("\n\tvertex %d has acquired smart lock %d\n", vertex_number, lock->lock_number);
 	
 
 	return 1;
@@ -138,6 +150,7 @@ void unlock(SmartLock* lock) {
 	pthread_mutex_lock(&graph_lock);
 	deleteEdge(graph, lock->lock_number, vertex_number);
 	pthread_mutex_unlock(&graph_lock);
+	printf("\n\tthread %d is letting go of lock %d \n", vertex_number, lock->lock_number);
 	//delete edge from graph
 }
 
@@ -148,7 +161,10 @@ void unlock(SmartLock* lock) {
  * in main function of the test cases.
  */
 void cleanup() {
-
+	destroyGraph(graph);
+	pthread_mutex_destroy(&count_lock);
+	pthread_mutex_destroy(&index_lock);
+	pthread_mutex_destroy(&graph_lock);
 }
 
 _Bool is_new_thread(int thread_number){
