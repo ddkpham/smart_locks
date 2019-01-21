@@ -73,6 +73,7 @@ int isEmpty(struct queue* queue){
 }
 
 void destroyQueue(struct queue* queue){
+    //free(queue->items);
     free(queue);
 }
 
@@ -144,6 +145,7 @@ void deleteEdge(struct Graph* graph, int src, int dest){
     //delete from both adjacency lists
     deleteSingleEdge( graph, src, dest);
     deleteSingleEdge( graph, dest, src);
+
     return;
 }
 
@@ -162,7 +164,7 @@ void printGraph(struct Graph* graph){
     }
 }
 
-//THIS DOES NOT WORK FOR GRAPHS THAT NEED CYCLES DETECTED MULTIPLE TIMES
+
 //detects cycles now
 //returns true if cycle is detected, false otherwise
 _Bool bfs_cycle_detect(struct Graph* graph, int startVertex){
